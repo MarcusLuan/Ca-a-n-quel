@@ -1,58 +1,42 @@
 import json
 import os
 
-dados_iniciais = {}
-
-nome_arquivo = "dados.json"
-with open(nome_arquivo, "w") as arquivo:
-    json.dump(dados_iniciais, arquivo, indent=4)
-
-    #Atualizando
-def atualizar(novos_dados):
-  with open("dados.json", "r") as arquivo:
-      dados_existentes = json.load(arquivo)
-
-  dados_existentes.update(novos_dados)
-
-  with open(nome_arquivo, "w") as arquivo:
-      json.dump(dados_existentes, arquivo, indent=4)
-
-  print("Arquivo JSON atualizado com sucesso!")
-
+# Caminho do arquivo de dados
 arquivo_dados = "dados.json"
 
 # Garante que o arquivo existe
 if not os.path.exists(arquivo_dados):
     with open(arquivo_dados, "w") as f:
-        json.dump({}, f)
+        json.dump({}, f)  # Se o arquivo não existir, cria um arquivo vazio
 
 def salvar_usuario(nome, senha, idade, email):
+    # Lê os dados do arquivo
     with open(arquivo_dados, "r") as f:
         dados = json.load(f)
+
+    # Verifica se o usuário já existe
+    if nome in dados:
+        raise ValueError("Usuário já cadastrado.")
+
+    # Adiciona o novo usuário
     dados[nome] = {
         "senha": senha,
         "idade": idade,
         "email": email
     }
+
+    # Grava de volta no arquivo
     with open(arquivo_dados, "w") as f:
         json.dump(dados, f, indent=4)
 
+    print(f"Usuário {nome} cadastrado com sucesso!")
+
 def verificar_login(nome, senha):
+    # Lê os dados do arquivo
     with open(arquivo_dados, "r") as f:
         dados = json.load(f)
-    return nome in dados and dados[nome]["senha"] == senha
-      
-      #Caça niquel
-from random import randint
 
-def caca_niquel():
-  print("Bem-vindo ao jogo de caça de niquel!")
-  numeros = [randint(1,8), randint(1,8), randint(1,8)]
-  print("Números gerados:", numeros)
-  if numeros[0] == numeros[1] == numeros[2]:
-    print("Você encontrou o niquel!")
-    return True
-  else:
-    print("Você não encontrou o niquel.")
+    # Verifica se o usuário existe e se a senha bate
+    if nome in dados and dados[nome]["senha"] == senha:
+        return True
     return False
-

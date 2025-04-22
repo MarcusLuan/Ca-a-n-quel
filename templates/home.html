@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+</head>
+<body>
+    <h1>Bem-vindo, {{ usuario }}!</h1>
+
+{% if dados %}
+  <p>Idade: {{ dados.idade }}</p>
+  <p>Email: {{ dados.email }}</p>
+  <form action="{{ url_for('logout') }}" method="get">
+      <button type="submit">Logout</button>
+  </form>
+{% else %}
+  <p>Você não está logado.</p>
+  <a href="{{ url_for('login') }}">Login</a>
+{% else %}
+<br>
+  <a href="{{ url_for('caca_niquel') }}">Jogar Caça Niquel</a>
+{% endif %}
+</body>
+</html>

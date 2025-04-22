@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Caça Niquel</title>
+</head>
+<body>
+    <h1>Jogo de Caça Niquel</h1>
+
+    <form method="POST">
+        <button type="submit">Jogar</button>
+    </form>
+
+    {% if resultado %}
+        <h2>{{ resultado }}</h2>
+    {% endif %}
+
+    <br>
+    <a href="{{ url_for('home') }}">Voltar para a Home</a>
+</body>
+</html>
