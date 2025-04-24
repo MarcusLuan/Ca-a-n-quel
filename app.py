@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 import json, os
-from usuario import salvar_usuario, verificar_login
+from usuario import salvar_usuario, verificar_login, adicionar_dinheiro, apostar
 
 app = Flask(__name__)
 app.secret_key = 'segredo'
@@ -64,13 +64,31 @@ from random import randint
 @app.route('/maquina', methods=['GET', 'POST'])
 def caca_niquel():
     resultado = None
+    usuario = session.get('usuario')
+
     if request.method == 'POST':
-        numeros = [randint(1, 8), randint(1, 8), randint(1, 8)]
-        if numeros[0] == numeros[1] == numeros[2]:
-            resultado = f"Você encontrou o niquel! Números: {numeros}"
+        valor_aposta = float(request.form['aposta'])
+        
+        if usuario:
+            resultado = apostar(usuario, valor_aposta)
+
+    with open('dados.json', "r") as f:
+        dados = json.load(f)
+    
+    return render_template('maquina.html', resultado=resultado, dados=dados.get(usuario))
+
+@app.route('/adicionar_dinheiro', methods=['POST'])
+def adicionar_dinheiro_route():
+    valor = float(request.form['valor'])
+    usuario = session.get('usuario')
+    
+    if usuario and valor > 0:
+        if adicionar_dinheiro(usuario, valor):
+            flash(f"Você adicionou R${valor} ao seu saldo.")
         else:
-            resultado = f"Você não encontrou o niquel. Números: {numeros}"
-    return render_template('caca_niquel.html', resultado=resultado)
+            flash("Erro ao adicionar dinheiro.")
+    return redirect(url_for('home'))
+
 
 if __name__ == '__main__':
     app.run(debug=True)

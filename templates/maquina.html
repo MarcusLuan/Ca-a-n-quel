@@ -1,3 +1,4 @@
+<!-- maquina.html -->
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -8,7 +9,9 @@
     <h1>Jogo de Caça Niquel</h1>
 
     <form method="POST">
-        <button type="submit">Jogar</button>
+        <label for="aposta">Valor da Aposta:</label>
+        <input type="number" name="aposta" id="aposta" min="1" max="{{ dados.saldo }}" required>
+        <button type="submit">Apostar</button>
     </form>
 
     {% if resultado %}

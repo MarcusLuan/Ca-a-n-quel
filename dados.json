@@ -3,5 +3,10 @@
         "senha": "6789",
         "idade": 45,
         "email": "oi@oi.com"
+    },
+    "Marcus": {
+        "senha": "1234",
+        "idade": 16,
+        "email": "marcus@luan"
     }
 }

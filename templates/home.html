@@ -1,3 +1,4 @@
+<!-- home.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,17 +9,26 @@
 <body>
     <h1>Bem-vindo, {{ usuario }}!</h1>
 
-{% if dados %}
-  <p>Idade: {{ dados.idade }}</p>
-  <p>Email: {{ dados.email }}</p>
-  <form action="{{ url_for('logout') }}" method="post">
-      <button type="submit">Logout</button>
-  </form>
-{% else %}
-  <p>Você não está logado.</p>
-  <a href="{{ url_for('login') }}">Login</a>
-<br>
-  <a href="{{ url_for('caca_niquel') }}">Jogar Caça Niquel</a>
-{% endif %}
+    {% if dados %}
+        <p>Idade: {{ dados.idade }}</p>
+        <p>Email: {{ dados.email }}</p>
+        <p>Saldo: R$ {{ dados.saldo }}</p>
+        
+        <form action="{{ url_for('adicionar_dinheiro') }}" method="post">
+            <label for="valor">Adicionar Dinheiro: </label>
+            <input type="number" name="valor" id="valor" min="1" required>
+            <button type="submit">Adicionar</button>
+        </form>
+
+        <form action="{{ url_for('logout') }}" method="post">
+            <button type="submit">Logout</button>
+        </form>
+
+    {% else %}
+        <p>Você não está logado.</p>
+        <a href="{{ url_for('login') }}">Login</a>
+    {% endif %}
+
+    <a href="{{ url_for('maquina') }}">Jogar</a>
 </body>
 </html>
