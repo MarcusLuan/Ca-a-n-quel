@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
-import json
-from backend.usuario import salvar_usuario, verificar_login
+import json, os
+from usuario import salvar_usuario, verificar_login
 
 app = Flask(__name__)
 app.secret_key = 'segredo'
@@ -9,6 +9,7 @@ app.secret_key = 'segredo'
 def index():
     return render_template('index.html')
 
+@app.route('/cadastro', methods=["GET","POST"])
 def cadastro():
     if request.method == 'POST':
         nome = request.form['nome']
@@ -16,10 +17,13 @@ def cadastro():
         idade = request.form['idade']
         email = request.form['email']
 
-        salvar_usuario(nome, senha, int(idade), email)  # sem try
-        flash('Cadastro realizado com sucesso! Faça login.')
-        return redirect(url_for('login'))
-
+        autenticado = salvar_usuario(nome, senha, int(idade), email)  # sem try
+        if autenticado:
+            flash('Cadastro realizado com sucesso! Faça login.')
+            return redirect(url_for('login'))
+        else:
+            flash('Usuário já existe! Tente um nome diferente.')
+    
     return render_template('cadastro.html')
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -49,7 +53,7 @@ def home():
 
     return render_template('home.html', usuario=usuario, dados=dados_usuario)
 
-@app.route('/logout')
+@app.route('/logout', methods=['POST'])
 def logout():
     session.pop('usuario', None)
     flash('Você saiu com sucesso.')

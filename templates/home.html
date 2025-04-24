@@ -11,13 +11,12 @@
 {% if dados %}
   <p>Idade: {{ dados.idade }}</p>
   <p>Email: {{ dados.email }}</p>
-  <form action="{{ url_for('logout') }}" method="get">
+  <form action="{{ url_for('logout') }}" method="post">
       <button type="submit">Logout</button>
   </form>
 {% else %}
   <p>Você não está logado.</p>
   <a href="{{ url_for('login') }}">Login</a>
-{% else %}
 <br>
   <a href="{{ url_for('caca_niquel') }}">Jogar Caça Niquel</a>
 {% endif %}
